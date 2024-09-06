@@ -1,6 +1,5 @@
 from pollux_framework.abstract.databasedriver_abstract import DatabaseDriverAbstract
 from influxdb_client import InfluxDBClient
-from influxdb_client.rest import ApiException
 from influxdb_client.client.write_api import SYNCHRONOUS
 from datetime import datetime
 
