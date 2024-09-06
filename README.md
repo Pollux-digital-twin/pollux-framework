@@ -1,23 +1,23 @@
-[![Test workflow status](https://github.com/GEMINI-Digital-Twin/gemini-framework/actions/workflows/python_test.yaml/badge.svg?branch=main)](https://github.com/GEMINI-Digital-Twin/gemini-framework/actions/workflows/python_test.yaml?query=branch%3Amain)
-[![Lint workflow status](https://github.com/GEMINI-Digital-Twin/gemini-framework/actions/workflows/python_lint.yaml/badge.svg?branch=main)](https://github.com/GEMINI-Digital-Twin/gemini-framework/actions/workflows/python_lint.yaml?query=branch%3Amain)
+[![Test workflow status](https://github.com/pollux-Digital-Twin/pollux-framework/actions/workflows/python_test.yaml/badge.svg?branch=main)](https://github.com/pollux-Digital-Twin/pollux-framework/actions/workflows/python_test.yaml?query=branch%3Amain)
+[![Lint workflow status](https://github.com/pollux-Digital-Twin/pollux-framework/actions/workflows/python_lint.yaml/badge.svg?branch=main)](https://github.com/pollux-Digital-Twin/pollux-framework/actions/workflows/python_lint.yaml?query=branch%3Amain)
 
 
 
-# gemini-framework
+# pollux-framework
 
-This repository is part of the 'Nieuwe Warmte Nu GEMINI Digital Twin' project. 
+This repository is part of the 'FLIE' project. 
 
-Framework library of the GEMINI Digital Twin
+Framework library of the pollux Digital Twin
 
 
 ## Bug reports and discussions
 
-If you think you found a bug, feel free to open an [issue](https://github.com/GEMINI-Digital-Twin/gemini-framework/issues).
+If you think you found a bug, feel free to open an [issue](https://github.com/pollux-digital-twin/pollux-framework/issues).
 Focused suggestions and requests can also be opened as issues. Before opening a pull request, please start an issue or a discussion on the topic.
 
 ## Contribution
 
-If you want to contribute to the package, please read our [CONTRIBUTING.md](https://github.com/GEMINI-Digital-Twin/gemini-framework/blob/main/CONTRIBUTING.md) file.
+If you want to contribute to the package, please read our [CONTRIBUTING.md](https://github.com/pollux-digital-twin/pollux-framework/blob/main/CONTRIBUTING.md) file.
 
 ## License
 
@@ -25,7 +25,3 @@ This content is released under the [GNU General Public License v3.0](https://www
 
 
 ## Acknowledgments
-This project is sponsored by NWM innovatie: Datagedreven optimalisatie aardwarmtesystemen
-(https://nwn.nu/projecten/innovaties/datagedreven-optimalisatie-aardwarmte-systemen)
-
-Organization: TNO, Aardyn, HVC, Well Engineering Partners (WEP), Helin Data
