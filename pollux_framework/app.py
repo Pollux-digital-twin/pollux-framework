@@ -24,10 +24,9 @@ if __name__ == "__main__":
 
     projectpath = os.getenv('POLLUX_PROJECT_FOLDER',
                             os.path.join(pollux_root_dir, 'pollux-project'))
-    # plantname = os.getenv('POLLUX_PLANT', 'HAL')
-    plantname = ''
+    plantname = os.getenv('POLLUX_PLANT', '')
 
     if not plantname == '':
         app = App(projectpath, plantname)
         app.boot()
-        # app.step()
+        app.step()

@@ -1,22 +1,15 @@
+from pollux_framework.abstract.databasedriver_abstract import DatabaseDriverAbstract
 from influxdb_client import InfluxDBClient
 from influxdb_client.rest import ApiException
 from influxdb_client.client.write_api import SYNCHRONOUS
 from datetime import datetime
 
 
-class InfluxdbDriver:
+class InfluxdbDriver(DatabaseDriverAbstract):
     """ Timeseries database based on Influxdb"""
 
     def __init__(self):
-        """ Establish connection to InfluxDB internal database
-
-        """
-        self.conn = None
-        self.parameters = dict()
-
-    def update_parameters(self, parameters):
-        for key, value in parameters.items():
-            self.parameters[key] = value
+        super().__init__()
 
     def connect(self):
         self.conn = InfluxDBClient(url=self.parameters["url"], org=self.parameters["org"],
@@ -25,49 +18,6 @@ class InfluxdbDriver:
 
     def disconnect(self):
         self.conn = []
-
-    def check_connection(self):
-        """Check that the InfluxDB is running."""
-        print("> Checking connection ...", end=" ")
-        self.conn.api_client.call_api('/ping', 'GET')
-        print("ok")
-
-    def check_query(self):
-        """Check that the credentials has permission to query from the Bucket"""
-        print("> Checking credentials for query ...", end=" ")
-        try:
-            self.conn.query_api().query(
-                f"from(bucket:\"{self.parameters['bucket']}\") |> range(start: -1m) |> limit(n:1)",
-                self.parameters['org'])
-        except ApiException as e:
-            # missing credentials
-            if e.status == 404:
-                raise Exception(
-                    f"The specified token doesn't have sufficient credentials "
-                    f"to read from '{self.parameters['bucket']}' "
-                    f"or specified bucket doesn't exists.") from e
-            raise
-        print("ok")
-
-    def check_write(self):
-        """Check that the credentials has permission to write into the Bucket"""
-        print("> Checking credentials for write ...", end=" ")
-        try:
-            self.conn.write_api(write_options=SYNCHRONOUS).write(self.parameters['bucket'],
-                                                                 self.parameters['org'], b"")
-        except ApiException as e:
-            # bucket does not exist
-            if e.status == 404:
-                raise Exception("The specified bucket does not exist.") from e
-            # insufficient permissions
-            if e.status == 403:
-                raise Exception(
-                    f"The specified token does not have sufficient credentials "
-                    f"to write to '{self.parameters['bucket']}'.") from e
-            # 400 (BadRequest) caused by empty LineProtocol
-            if e.status != 400:
-                raise
-        print("ok")
 
     def write_data(self, plant_name, asset_name, tag_name, time, value, write_option=SYNCHRONOUS):
         """ function to write data to internal database
@@ -198,21 +148,9 @@ class InfluxdbDriver:
         query_result = query_api.query(org=self.parameters['org'], query=query)
 
         tagnames = []
+        tag_desc = []
         for table in query_result:
             for record in table.records:
                 tagnames.append(record.get_value())
 
-        query = 'import "influxdata/influxdb/schema"\n\n\
-                schema.measurementTagValues(\
-                bucket:"' + self.parameters['bucket'] + '", \
-                measurement:"' + plant_name + '",\
-                tag: "asset_name", )'
-
-        query_result = query_api.query(org=self.parameters['org'], query=query)
-
-        unitnames = []
-        for table in query_result:
-            for record in table.records:
-                unitnames.append(record.get_value())
-
-        return unitnames, tagnames
+        return tagnames, tag_desc

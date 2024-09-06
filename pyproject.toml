@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "gemini-framework"
-version = "0.1.7"
+name = "pollux-framework"
+version = "0.1.0"
 description = ""
 authors = ["Ryvo Octaviano <ryvo.octaviano@tno.nl>"]
 readme = "README.md"
-packages = [{include = "gemini_framework"}]
+packages = [{include = "pollux_framework"}]
 classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Programming Language :: Python :: 3",
@@ -29,9 +29,6 @@ scipy = "^1.13.1"
 numpy = "^1.26.4"
 influxdb-client = "^1.43.0"
 pytz = "^2024.1"
-adh-sample-library-preview = "^0.10.11rc0"
-matplotlib = "^3.9.0"
-gemini-model = "^0.1.12"
 
 
 [build-system]

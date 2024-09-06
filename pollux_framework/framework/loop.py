@@ -11,7 +11,6 @@ class Loop:
         self.n_step = None
 
     def initialize(self, end_time, timestep):
-
         self.end_time = end_time
         self.timestep = timestep
 

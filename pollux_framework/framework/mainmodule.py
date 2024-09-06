@@ -1,4 +1,4 @@
-from gemini_framework.framework.loop import Loop
+from pollux_framework.framework.loop import Loop
 
 
 class MainModule:

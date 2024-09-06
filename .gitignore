@@ -1,0 +1,10 @@
+.idea
+.pytest_cache
+.coverage
+__pycache__
+/venv
+poetry.lock
+avevadb.json
+osisoftpi.json
+flask_session
+/dist

@@ -3,18 +3,8 @@ import os
 import json
 
 from pollux_framework.framework.plant import Plant
-from pollux_framework.database.influxdb_aveva_reader_db import InfluxdbAvevaReaderDB
-from pollux_framework.modules.electrolyser.unit import Electrolyser
-# from pollux_framework.modules.esp.unit import ESPUnit
-# from pollux_framework.modules.productionwell.unit import ProductionWellUnit
-# from pollux_framework.modules.injectionwell.unit import InjectionWellUnit
-# from pollux_framework.modules.injectionpump.unit import InjectionPumpUnit
-# from pollux_framework.modules.degasser.unit import DegasserUnit
-# from pollux_framework.modules.filter.unit import FilterUnit
-# from pollux_framework.modules.heatexchanger.unit import HeatExchangerUnit
-# from pollux_framework.modules.reservoir.unit import ReservoirUnit
-# from pollux_framework.modules.boosterpump.unit import BoosterPumpUnit
-# from pollux_framework.modules.gasboiler.unit import GasBoilerUnit
+from pollux_framework.database.influxdb_csv_connector import InfluxdbCsvConnector
+from pollux_framework.modules.electrolyser.unit import ElectrolyzerUnit
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
@@ -38,8 +28,11 @@ def setup(project_path, plant_name):
         cfg = json.load(jsonfile)
         plant.update_parameters(cfg)
 
-    with open(os.path.join(project_folder, 'diagram.json'), 'r') as jsonfile:
-        plant.diagram = json.load(jsonfile)
+    if os.path.exists(os.path.join(project_folder, 'diagram.json')):
+        with open(os.path.join(project_folder, 'diagram.json'), 'r') as jsonfile:
+            plant.diagram = json.load(jsonfile)
+    else:
+        plant.diagram = {'cells': {}}
 
     plant = boot_unit(plant)
     plant = boot_database(plant)
@@ -57,8 +50,8 @@ def boot_unit(plant):
             with open(os.path.join(project_folder, file), 'r') as jsonfile:
                 unitfile = json.load(jsonfile)
                 unit = []
-                if unitfile['parameters']['type'] == 'electrolyser':
-                    unit = Electrolyser(unitfile['id'], unitfile['name'], plant)
+                if unitfile['parameters']['type'] == 'electrolyzer':
+                    unit = ElectrolyzerUnit(unitfile['id'], unitfile['name'], plant)
                 else:
                     logger.error(
                         'UNIT ' + unitfile['parameters']['type'] + ' not yet implemented')
@@ -78,7 +71,7 @@ def boot_database(plant):
     """function to starting up the boot_database."""
     logger.info('Boot Database')
     # add measured database
-    meas_database = InfluxdbAvevaReaderDB('measured')
+    meas_database = InfluxdbCsvConnector('measured')
     plant.add_database(meas_database)
     for database in plant.databases:
         database.register_tags(plant.units)

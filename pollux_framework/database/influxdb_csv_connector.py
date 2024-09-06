@@ -1,8 +1,9 @@
 from pollux_framework.database.influxdb_driver import InfluxdbDriver
-from pollux_framework.database.avevadb_driver import AvevaDriver
+from pollux_framework.database.csv_driver import CsvDriver
 from datetime import datetime, timedelta, timezone
 import logging
 import pytz
+import os
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
@@ -11,12 +12,12 @@ logger.setLevel(logging.INFO)
 tzobject = pytz.timezone('Europe/Amsterdam')
 
 
-class InfluxdbAvevaReaderDB:
+class InfluxdbCsvConnector:
 
     def __init__(self, category):
         self.category = category
         self.internal_db_driver = InfluxdbDriver()
-        self.external_db_driver = AvevaDriver()
+        self.external_db_driver = CsvDriver()
 
         self.tags = []
         self.parameters = dict()
@@ -27,14 +28,26 @@ class InfluxdbAvevaReaderDB:
             self.parameters[key] = value
 
         self.delta_t = self.parameters[self.category]['interval']
-        self.parameters['avevadb']['interval'] = self.delta_t
 
-        self.internal_db_driver.update_parameters(self.parameters['influxdb'])
-        self.external_db_driver.update_parameters(self.parameters['avevadb'])
+        self.external_db_driver.update_parameters({})
+
+        influxdb_param = {
+            "url": os.getenv('INFLUXDB_URL', 'http://localhost:8086'),
+            "org": os.getenv('INFLUXDB_ORG', 'TNO'),
+            "username": os.getenv('INFLUXDB_USERNAME', 'pollux-user'),
+            "password": os.getenv('INFLUXDB_PASSWORD', 'pollux-password'),
+            "bucket": os.getenv('INFLUXDB_BUCKET', 'pollux-project'),
+        }
+
+        self.internal_db_driver.update_parameters(influxdb_param)
 
     def connect(self):
         self.internal_db_driver.connect()
         self.external_db_driver.connect()
+
+    def disconnect(self):
+        self.internal_db_driver.disconnect()
+        self.external_db_driver.disconnect()
 
     def register_tags(self, units):
         for unit in units:
