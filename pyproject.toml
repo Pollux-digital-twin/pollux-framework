@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "pollux-framework"
 version = "0.1.0"
-description = ""
+description = "Core framework library of the POLLUX Digital Twin"
 authors = ["Ryvo Octaviano <ryvo.octaviano@tno.nl>"]
 readme = "README.md"
 packages = [{include = "pollux_framework"}]
