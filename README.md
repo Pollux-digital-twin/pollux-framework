@@ -5,9 +5,7 @@
 
 # pollux-framework
 
-This repository is part of the 'FLIE' project. 
-
-Framework library of the pollux Digital Twin
+Framework library of the TNO PolluX Digital Twin
 
 
 ## Bug reports and discussions
